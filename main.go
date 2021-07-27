@@ -26,5 +26,21 @@ func calculate(name1, name2 string) int{
 		numbers = append(numbers,1)
 	}
 	
-	return -1
+	return -1 //TODO right return (reduce numbers)
+}
+
+func reduceNumbers(numbers1, numbers2 []int)int{
+	var result int
+
+	if len(numbers1) <= 2 && len(numbers1) == 0{
+		//TODO
+	}else if len(numbers1) >= 2{
+		//TODO
+	}else if len(numbers1) == 1{
+		//TODO
+	}else if len(numbers1) == 0 && len(numbers2) > 0{
+		//TODO
+	}
+
+	return -1 //TODO right return
 }
