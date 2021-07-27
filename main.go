@@ -1,15 +1,23 @@
 package main
 
 import (
-	"strings"
+	"errors"
+	"fmt"
 	"regexp"
+	"strconv"
+	"strings"
 )
 
 func main(){
-	
+	result, err:= calculate("Bananenalex","Bananenalexa")
+	if err==nil {
+		fmt.Println(result)
+	}else{
+		fmt.Println(err)
+	}
 }
 
-func calculate(name1, name2 string) int{
+func calculate(name1, name2 string) (int, error){
 	
 	names := strings.ToLower(name1+name2)
 	var numbers []int //slice which holds occurrences of the single letter in names
@@ -26,21 +34,45 @@ func calculate(name1, name2 string) int{
 		numbers = append(numbers,1)
 	}
 	
-	return -1 //TODO right return (reduce numbers)
+	return reduceNumbers(numbers,[]int{})
 }
 
-func reduceNumbers(numbers1, numbers2 []int)int{
+func reduceNumbers(numbers1, numbers2 []int)(int,error){
 	var result int
 
-	if len(numbers1) <= 2 && len(numbers1) == 0{
-		//TODO
+	if len(numbers1) <= 2 && len(numbers2) == 0{
+		switch len(numbers1){
+		case 2: result =  numbers1[0]*10+numbers1[1]
+		case 1: result = numbers1[0]
+		case 0: result = 0
+		default: result = -1
+		}
 	}else if len(numbers1) >= 2{
-		//TODO
+		numbers2 = append(numbers2, numbers1[0]+numbers1[len(numbers1)-1])
+		numbers1 = numbers1[1:len(numbers1)-1] //shift & pop
+		return reduceNumbers(numbers1,numbers2)
 	}else if len(numbers1) == 1{
-		//TODO
+		numbers2 = append(numbers2,numbers1[0])
+		numbers1 = []int{}
+		return reduceNumbers(numbers1,numbers2)
 	}else if len(numbers1) == 0 && len(numbers2) > 0{
-		//TODO
+		return reduceNumbers(numbers2,numbers1)
 	}
 
-	return -1 //TODO right return
+	if result == -1{
+		return result, errors.New("something went wrong")
+	}else if result > 99{
+		//int to string
+		resultStr := strconv.Itoa(result)
+		//string to int slice
+		var numbers = []int{}
+		for _,e := range resultStr{
+			i,_ := strconv.Atoi(string(e))
+			numbers = append(numbers,i)
+		}
+		//reduce again
+		return reduceNumbers(numbers,[]int{})
+	}
+	
+	return result, nil
 }
