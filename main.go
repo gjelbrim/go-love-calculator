@@ -20,10 +20,10 @@ func main(){
 	name1 = name1[:len(name1)-1]
 	name2 = name2[:len(name2)-1]
 
-	result1,err1 := calculate(name1,name2);
+	result1,err1 := calculate(name1,name2)
 	result2,err2 := calculate(name2,name1)
 
-	result := float32((result1+result2)/2)
+	result := (float32(result1)+float32(result2))/2
 	if err1==nil && err2 == nil {
 		fmt.Printf("The compatibility of %s and %s is %.1f%%.",name1,name2,result)
 	}else{
