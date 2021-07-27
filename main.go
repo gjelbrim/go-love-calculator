@@ -1,19 +1,33 @@
 package main
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
 func main(){
-	result, err:= calculate("Bananenalex","Bananenalexa")
-	if err==nil {
-		fmt.Println(result)
+
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Enter Your Name: ")
+	name1,_ := reader.ReadString('\n')
+	fmt.Print("Enter Your Crushe's Name: ")
+	name2,_ := reader.ReadString('\n')
+	name1 = name1[:len(name1)-1]
+	name2 = name2[:len(name2)-1]
+
+	result1,err1 := calculate(name1,name2);
+	result2,err2 := calculate(name2,name1)
+
+	result := float32((result1+result2)/2)
+	if err1==nil && err2 == nil {
+		fmt.Printf("The compatibility of %s and %s is %.1f%%.",name1,name2,result)
 	}else{
-		fmt.Println(err)
+		fmt.Println(err1)
 	}
 }
 
@@ -54,7 +68,7 @@ func reduceNumbers(numbers1, numbers2 []int)(int,error){
 	}else if len(numbers1) == 1{
 		numbers2 = append(numbers2,numbers1[0])
 		numbers1 = []int{}
-		return reduceNumbers(numbers1,numbers2)
+		return reduceNumbers(numbers2,numbers1)
 	}else if len(numbers1) == 0 && len(numbers2) > 0{
 		return reduceNumbers(numbers2,numbers1)
 	}
